@@ -1,31 +1,39 @@
+/* eslint-disable react/react-in-jsx-scope */
+
+import { useState } from "react"
 import "./App.css"
+import { TwitterFollowCard } from "./components/TwitterFollowCard"
+
 
 export const App = () => {
-    return(
-        <article className="tw-followCard">
-            <header className="tw-followCard-header">
-                <img 
-                className="tw-followCard-avatar" 
-                src="https://unavatar.io/x/warhammer" 
-                alt="Avatar de warhammer" />
 
-                <div className="tw-followCard-info">
-                    <strong>
-                        Warhammer Oficial
-                    </strong>
-                    
-                    <span className="tw-followCard-account">
-                        @warhammerOf
-                    </span>
-                </div>
-            </header>
+    const [name, setName] = useState('warhammer')
 
-            <aside>
-                <button className="tw-followCard-follow">
-                    Seguir
-                </button>
-            </aside>
-        </article>
+    return (
+        <section className="App">
+        <TwitterFollowCard
+            usserName={name}
+            name={"warhammer Oficial"}
+        />
+        <TwitterFollowCard
+            usserName={"macabeso"}
+            name={"Macabeso Oficial"}
+        />
+        <TwitterFollowCard
+            usserName={"ageofsigmar"}
+            name={"Age of Sigmar Oficial"}
+        />
+        <TwitterFollowCard
+            usserName={"ageofsquidmar"}
+            name={"Squidmar Paint Miniatures"}
+        />
+
+        <button onClick={() => setName(name == 'warhammer' ? 'RedQueenGames' : 'warhammer')}>
+            Cambiar Nombre
+        </button>
+        </section>
     )
 }
+
+
 
