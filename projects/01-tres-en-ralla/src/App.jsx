@@ -39,16 +39,16 @@ function App() {
 
   const checkWinner = (boardToCheck) => {
 
-		// Versión con iteración de arreglos mediante Map
-   // return WINNER_COMBOS
-   //  .map(([a,b,c])=> boardToCheck[a] && boardToCheck[a] === boardToCheck[b] && boardToCheck[a] === boardToCheck[c] ? boardToCheck[a] : null)
-   //   .find(result => result !== null) || null
+// Versión con iteración de arreglos mediante Map
+// return WINNER_COMBOS
+//  .map(([a,b,c])=> boardToCheck[a] && boardToCheck[a] === boardToCheck[b] && boardToCheck[a] === boardToCheck[c] ? boardToCheck[a] : null)
+//   .find(result => result !== null) || null
 
 				
-		// Versión CleanCode Optimizada mediante un reduce
-			WINNER_COMBOS.reduce(
-				(winner, [a,b,c]) => winner ? winner : boardToCheck[a] &&	boardToCheck[a] === boardToCheck[b]	&& boardToCheck[a] === boardToCheck[c] ? boardToCheck[a] : null, null
-				)			
+// Versión CleanCode Optimizada mediante un reduce
+		WINNER_COMBOS.reduce(
+			(winner, [a,b,c]) => winner ? winner : boardToCheck[a] &&	boardToCheck[a] === boardToCheck[b]	&& boardToCheck[a] === boardToCheck[c] ? boardToCheck[a] : null, null
+			)			
 
 		
 				
