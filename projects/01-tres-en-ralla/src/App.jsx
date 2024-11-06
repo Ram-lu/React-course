@@ -6,6 +6,7 @@ const TURNS = {
   O: 'O'
 }
 
+
 const WINNER_COMBOS = [
   [0,1,2],
   [3,4,5],
@@ -39,31 +40,29 @@ function App() {
 
   const checkWinner = (boardToCheck) => {
 
+    // Versión CleanCode Optimizada mediante un reduce
+		WINNER_COMBOS.reduce(
+			(winner, [a,b,c]) => winner ? winner : boardToCheck[a] &&	boardToCheck[a] === boardToCheck[b]	&& boardToCheck[a] === boardToCheck[c] ? boardToCheck[a] : null, null
+	  )	
+
+
 // Versión con iteración de arreglos mediante Map
 // return WINNER_COMBOS
 //  .map(([a,b,c])=> boardToCheck[a] && boardToCheck[a] === boardToCheck[b] && boardToCheck[a] === boardToCheck[c] ? boardToCheck[a] : null)
 //   .find(result => result !== null) || null
 
-				
-// Versión CleanCode Optimizada mediante un reduce
-		WINNER_COMBOS.reduce(
-			(winner, [a,b,c]) => winner ? winner : boardToCheck[a] &&	boardToCheck[a] === boardToCheck[b]	&& boardToCheck[a] === boardToCheck[c] ? boardToCheck[a] : null, null
-			)			
-
-		
-				
-				// Versión con Estructuras típicas, menor eficiente y menor legibilidad.
-      // for (const combo of WINNER_COMBOS){
-      //   const [a,b,c] = combo
-      //   if (
-      //     boardToCheck[a] && 
-      //     boardToCheck[a] === boardToCheck[b] && 
-      //     boardToCheck[a] === boardToCheck[c]
-      //   ) {
-      //     return boardToCheck[a]
-      //   }
-      // }
-      // return null
+// Versión con Estructuras típicas, menor eficiente y menor legibilidad.
+    // for (const combo of WINNER_COMBOS){
+    //   const [a,b,c] = combo
+    //   if (
+    //     boardToCheck[a] && 
+    //     boardToCheck[a] === boardToCheck[b] && 
+    //     boardToCheck[a] === boardToCheck[c]
+    //   ) {
+    //     return boardToCheck[a]
+    //   }
+    // }
+    // return null
   }
 
   const updateBoard = (index) => {
