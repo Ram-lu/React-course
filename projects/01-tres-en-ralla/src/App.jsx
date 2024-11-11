@@ -1,22 +1,9 @@
+/* eslint-disable react/prop-types */
 import { useState } from 'react'
-import './App.css'
+import confetti from 'canvas-confetti'
+import { checkWinner } from './logic/checkWinner'
+import { TURNS, WINNER_COMBOS } from './constants'
 
-const TURNS = {
-  X: 'X',
-  O: 'O'
-}
-
-
-const WINNER_COMBOS = [
-  [0,1,2],
-  [3,4,5],
-  [6,7,8],
-  [0,3,6],
-  [1,4,7],
-  [2,5,8],
-  [0,4,8],
-  [2,4,6]
-]
 
 
 const Square = ({children, isSelected, updateBoard, index}) => {
@@ -38,32 +25,17 @@ function App() {
   const [turn, setTurn] = useState(TURNS.X)
   const [winner, setWinner] = useState(null)
 
-  const checkWinner = (boardToCheck) => {
 
-    // Versión CleanCode Optimizada mediante un reduce
-		WINNER_COMBOS.reduce(
-			(winner, [a,b,c]) => winner ? winner : boardToCheck[a] &&	boardToCheck[a] === boardToCheck[b]	&& boardToCheck[a] === boardToCheck[c] ? boardToCheck[a] : null, null
-	  )	
+  
 
+  const checkEndGame = boardToCheck => boardToCheck.includes(null) ? true : null
 
-// Versión con iteración de arreglos mediante Map
-// return WINNER_COMBOS
-//  .map(([a,b,c])=> boardToCheck[a] && boardToCheck[a] === boardToCheck[b] && boardToCheck[a] === boardToCheck[c] ? boardToCheck[a] : null)
-//   .find(result => result !== null) || null
-
-// Versión con Estructuras típicas, menor eficiente y menor legibilidad.
-    // for (const combo of WINNER_COMBOS){
-    //   const [a,b,c] = combo
-    //   if (
-    //     boardToCheck[a] && 
-    //     boardToCheck[a] === boardToCheck[b] && 
-    //     boardToCheck[a] === boardToCheck[c]
-    //   ) {
-    //     return boardToCheck[a]
-    //   }
-    // }
-    // return null
+  const resetGame = () => {
+    setBoard(Array(9).fill(null))
+    setTurn(TURNS.X)
+    setWinner(null)
   }
+           
 
   const updateBoard = (index) => {
     if (board[index] || winner) return
@@ -75,23 +47,24 @@ function App() {
     const newTurn = turn === TURNS.O ? TURNS.X : TURNS.O
     setTurn(newTurn)
 
-    const newWinner = checkWinner(newBoard)
-    newWinner ? setWinner(newWinner) : newWinner
+    const newWinner = checkWinner(newBoard, WINNER_COMBOS)
+    newWinner ? (setWinner(newWinner), confetti()) : checkEndGame(newBoard) ?? setWinner(false)
   }
 
   return (
     <main className='board'>
       <h1>Tres en Raya</h1>
+      <button onClick={resetGame}>Reiniciar el Juego</button>
       <section className='game'>
         {
-          board.map((_, index) => {
+          board.map((element, index) => {
             return (
               <Square
                 key={index}
                 index = {index}
                 updateBoard={updateBoard}
               >
-                {board[index]}
+                {element}
               </Square>
             )
           })
@@ -105,6 +78,30 @@ function App() {
           {TURNS.O}
           </Square>
       </section>
+
+      {
+        winner !== null && (
+          <section className="winner">
+            <div className="text">
+              <h2>
+                {
+                  winner === false
+                    ? 'Empate'
+                    : 'Gano: '
+                }
+              </h2>
+
+              <header className="win">
+                {winner && <Square>{winner}</Square>}
+              </header>
+
+              <footer>
+                <button onClick={resetGame}>Jugar de Nuevo</button>
+              </footer>
+            </div>
+          </section>
+        )
+      }
     </main>
   )
 }

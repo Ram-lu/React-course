@@ -16,5 +16,8 @@
     "url": "https://github.com/Ram-lu/React-course/issues"
   },
   "homepage": "https://github.com/Ram-lu/React-course#readme",
-  "keywords": []
+  "keywords": [],
+  "dependencies": {
+    "canvas-confetti": "1.9.3"
+  }
 }
