@@ -1,23 +1,9 @@
 /* eslint-disable react/prop-types */
 import { useState } from 'react'
 import confetti from 'canvas-confetti'
-import { checkWinner } from './logic/checkWinner'
+import { checkWinner, checkEndGame } from './logic/gameLogic'
 import { TURNS, WINNER_COMBOS } from './constants'
-
-
-
-const Square = ({children, isSelected, updateBoard, index}) => {
-  const className = `square ${isSelected ? 'is-selected' : ''}`
-  const handleClick = () => {
-    updateBoard(index)
-  }
-
-  return (
-    <div onClick={handleClick} className={className}>
-      {children}
-    </div>
-  )
-}
+import { Square } from './components/Square'
 
 function App() {
 
@@ -25,18 +11,12 @@ function App() {
   const [turn, setTurn] = useState(TURNS.X)
   const [winner, setWinner] = useState(null)
 
-
-  
-
-  const checkEndGame = boardToCheck => boardToCheck.includes(null) ? true : null
-
   const resetGame = () => {
     setBoard(Array(9).fill(null))
     setTurn(TURNS.X)
     setWinner(null)
   }
            
-
   const updateBoard = (index) => {
     if (board[index] || winner) return
 
