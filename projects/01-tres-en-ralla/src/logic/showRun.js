@@ -21,9 +21,6 @@ export const updateBoardLogic = (index, board, winner, turn, setBoard, setTurn, 
     const newTurn = turn === TURNS.X ? TURNS.O : TURNS.X
     setTurn(newTurn)
 
-    window.localStorage.setItem('board', JSON.stringify(newBoard))
-    window.localStorage.setItem('turn', newTurn)
-
     const newWinner = checkWinner(newBoard, WINNER_COMBOS)
     newWinner ? setWinner(newWinner) : checkEndGame(newBoard) ?? setWinner(false)
 }
@@ -32,7 +29,4 @@ export const resetGameLogic = (setBoard, setTurn, setWinner) => {
     setBoard(Array(9).fill(null))
     setTurn(TURNS.X)
     setWinner(null)
-
-    window.localStorage.removeItem('board')
-    window.localStorage.removeItem('turn')
 }
