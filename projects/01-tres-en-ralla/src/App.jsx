@@ -5,8 +5,7 @@ import { checkWinner, checkEndGame } from './logic/gameLogic'
 import { TURNS, WINNER_COMBOS } from './constants'
 import { Square } from './components/Square'
 
-function App() {
-
+function App () {
   const [board, setBoard] = useState(Array(9).fill(null))
   const [turn, setTurn] = useState(TURNS.X)
   const [winner, setWinner] = useState(null)
@@ -16,7 +15,7 @@ function App() {
     setTurn(TURNS.X)
     setWinner(null)
   }
-           
+
   const updateBoard = (index) => {
     if (board[index] || winner) return
 
@@ -28,7 +27,11 @@ function App() {
     setTurn(newTurn)
 
     const newWinner = checkWinner(newBoard, WINNER_COMBOS)
-    newWinner ? (setWinner(newWinner), confetti()) : checkEndGame(newBoard) ?? setWinner(false)
+
+    newWinner
+      ? (setWinner(newWinner), confetti())
+      : checkEndGame(newBoard) ??
+    setWinner(false)
   }
 
   return (
@@ -41,7 +44,7 @@ function App() {
             return (
               <Square
                 key={index}
-                index = {index}
+                index={index}
                 updateBoard={updateBoard}
               >
                 {element}
@@ -50,19 +53,19 @@ function App() {
           })
         }
       </section>
-      <section className="turn">
+      <section className='turn'>
         <Square isSelected={turn === TURNS.X}>
           {TURNS.X}
-          </Square>
+        </Square>
         <Square isSelected={turn === TURNS.O}>
           {TURNS.O}
-          </Square>
+        </Square>
       </section>
 
       {
         winner !== null && (
-          <section className="winner">
-            <div className="text">
+          <section className='winner'>
+            <div className='text'>
               <h2>
                 {
                   winner === false
@@ -71,7 +74,7 @@ function App() {
                 }
               </h2>
 
-              <header className="win">
+              <header className='win'>
                 {winner && <Square>{winner}</Square>}
               </header>
 

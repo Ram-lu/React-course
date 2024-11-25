@@ -6,5 +6,5 @@ import { AppGato } from './AppGato.jsx'
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <AppGato />
-  </StrictMode>,
+  </StrictMode>
 )
