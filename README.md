@@ -1,10 +1,15 @@
-# React-course
-Para crear una API REST en **Node.js** con **Express** que implemente autenticación y creación de usuarios usando un archivo JSON como base de datos y siguiendo **principios de Clean Code y Clean Architecture**, organizaremos el proyecto en capas:
+Aquí tienes el ejercicio actualizado con los siguientes cambios:
 
----
+1. **`db.json`** movido a la carpeta `/database`.  
+2. Archivo **`.env`** implementado dentro de una carpeta `/config`.  
+3. Actualizaciones correspondientes para reflejar estas mejoras.
 
 ### **Estructura del proyecto**
 ```plaintext
+/config
+  .env
+/database
+  db.json
 /src
   /controllers
     authController.js
@@ -16,48 +21,34 @@ Para crear una API REST en **Node.js** con **Express** que implemente autenticac
     userModel.js
   /routes
     authRoutes.js
-  db.json
 app.js
+.gitignore
 ```
-
-### **Objetivos**
-1. **Controllers**: Manejan las solicitudes HTTP y respuestas.
-2. **Services**: Contienen la lógica del negocio.
-3. **Repositories**: Manejan la interacción con el archivo JSON.
-4. **Models**: Representan las estructuras de datos.
-5. **`db.json`**: Archivo JSON simula la base de datos.
 
 ---
 
-### **Desarrollo**
+### **Archivos del Proyecto**
 
-#### Instalar dependencias
-
-```bash
-npm init -y
-npm install express body-parser bcrypt jsonwebtoken fs-extra dotenv
+#### **Archivo `/config/.env`**
+```plaintext
+PORT=3000
+JWT_SECRET=mi_secreto_super_seguro
 ```
-
-- **express**: Framework para construir APIs.
-- **bcrypt**: Manejo de contraseñas cifradas.
-- **jsonwebtoken**: Generación y verificación de JWT.
-- **fs-extra**: Operaciones con archivos (`db.json`).
-- **dotenv**: Configuración de variables de entorno.
 
 ---
 
-### **Código**
-
-#### **Archivo `db.json`**
+#### **Archivo `/database/db.json`**
 ```json
 {
   "users": []
 }
 ```
 
-#### **Archivo `app.js`**
+---
+
+#### **Archivo `/app.js`**
 ```javascript
-require('dotenv').config();
+require('dotenv').config({ path: './config/.env' }); // Cargar .env desde config
 const express = require('express');
 const bodyParser = require('body-parser');
 const authRoutes = require('./src/routes/authRoutes');
@@ -96,7 +87,8 @@ module.exports = User;
 const fs = require('fs-extra');
 const path = require('path');
 
-const DB_PATH = path.join(__dirname, '../../db.json');
+// Ruta actualizada del archivo db.json
+const DB_PATH = path.join(__dirname, '../../database/db.json');
 
 async function getUsers() {
   const data = await fs.readJSON(DB_PATH);
@@ -135,6 +127,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/userModel');
 const userRepository = require('../repositories/userRepository');
 
+// Obtener secreto JWT desde .env
 const JWT_SECRET = process.env.JWT_SECRET || 'defaultsecret';
 
 async function registerUser(email, password) {
@@ -217,32 +210,51 @@ module.exports = router;
 
 ---
 
-### **Uso**
-1. Levanta el servidor:
-   ```bash
-   node app.js
-   ```
-2. Realiza llamadas a la API:
-   - **Registro** (`POST /api/auth/register`):
-     ```json
-     {
-       "email": "usuario@ejemplo.com",
-       "password": "contrasena123"
-     }
-     ```
-   - **Login** (`POST /api/auth/login`):
-     ```json
-     {
-       "email": "usuario@ejemplo.com",
-       "password": "contrasena123"
-     }
-     ```
+#### **Archivo `.gitignore`**
+```plaintext
+# Ignorar node_modules y config privado
+node_modules/
+config/.env
+```
 
 ---
 
-### **Extensiones**
-1. Agregar validaciones con **`express-validator`**.
-2. Implementar tests unitarios con **Jest**.
-3. Migrar la "base de datos" a MongoDB o PostgreSQL.
+### **Ejecución**
+1. **Instalar dependencias**:
+   ```bash
+   npm install
+   ```
 
-**¿Te gustaría agregar algún test o alguna funcionalidad adicional?** 😊
+2. **Crear archivo `.env` en la carpeta `config`**:
+   Asegúrate de que contenga el **`JWT_SECRET`** y el **`PORT`** definidos anteriormente.
+
+3. **Iniciar el servidor**:
+   ```bash
+   node app.js
+   ```
+
+---
+
+### **Pruebas**
+- **Registro (`POST /api/auth/register`)**:
+  ```json
+  {
+    "email": "test@example.com",
+    "password": "mypassword123"
+  }
+  ```
+- **Inicio de sesión (`POST /api/auth/login`)**:
+  ```json
+  {
+    "email": "test@example.com",
+    "password": "mypassword123"
+  }
+  ```
+
+---
+
+### **Mejoras sugeridas**
+1. **Agregar validaciones de entrada** con **`express-validator`**.
+2. **Implementar tests unitarios** para garantizar el funcionamiento de las capas individuales.
+
+¿Te gustaría que incluya más validaciones o ejemplos de tests automatizados? 😊
